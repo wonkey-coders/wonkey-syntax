@@ -1,5 +1,5 @@
 fileTypes:
-    - wx, wonkey
+    - wx
 foldingStartMarker: "(?xi)\n\t^\\s*(\n\t\t(?<!end|end\\s)(function|class|struct|method|operator|property|setter|select|while) |\n\t\t\\#rem | for | repeat | '\\#region\n\t)\\b"
 foldingStopMarker: "(?xi)\n\t^\\s*(\n\t# end <keyword>\n\t\tend\\s?(function|class|struct|method|operator|property|setter|select|while) |\n\t\t\\#end | '\\#end\\s?region\n\t)\\b"
 keyEquivalent: ^~M

@@ -4,7 +4,7 @@
   <dict>
     <key>fileTypes</key>
     <array>
-      <string>wx, wonkey</string>
+      <string>wx</string>
     </array>
     <key>foldingStartMarker</key>
     <string>(?xi)
@@ -1230,7 +1230,7 @@
       </dict>
     </dict>
     <key>scopeName</key>
-    <string>source.wx</string>
+    <string>source.wonkey</string>
     <key>uuid</key>
     <string>adbf7dfa-90fb-4551-938b-c4867d7e9a03</string>
   </dict>
