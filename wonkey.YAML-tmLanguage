@@ -1,0 +1,529 @@
+fileTypes:
+    - wx, wonkey
+foldingStartMarker: "(?xi)\n\t^\\s*(\n\t\t(?<!end|end\\s)(function|class|struct|method|operator|property|setter|select|while) |\n\t\t\\#rem | for | repeat | '\\#region\n\t)\\b"
+foldingStopMarker: "(?xi)\n\t^\\s*(\n\t# end <keyword>\n\t\tend\\s?(function|class|struct|method|operator|property|setter|select|while) |\n\t\t\\#end | '\\#end\\s?region\n\t)\\b"
+keyEquivalent: ^~M
+name: Wonkey
+patterns:
+    -
+        match: ;
+        name: punctuation.terminator.line.wonkey
+    -
+        include: '#wx_comment_quote'
+    -
+        include: '#wx_comment_block'
+    -
+        include: '#wx_global_variable'
+    -
+        include: '#wx_local_variable'
+    -
+        include: '#wx_constant'
+    -
+        include: '#wx_attributes'
+    -
+        include: '#wx_commands'
+    -
+        include: '#wx_function'
+    -
+        include: '#wx_method'
+    -
+        captures:
+            '1':
+                name: keyword.other.import.wonkey
+            '2':
+                name: string.unquoted.module.wonkey
+        match: '(?i)\b(using)\s+((?:[a-zA-Z_]\w*(\.\*)?)+)'
+        name: using.module.wonkey
+    -
+        begin: '(?i)\b(import)\s+(("))'
+        beginCaptures:
+            '1':
+                name: keyword.other.import.wonkey
+            '2':
+                name: punctuation.definition.string.begin.wonkey
+            '3':
+                name: string.quoted.double.wonkey
+        contentName: string.quoted.double.wonkey
+        end: '(")'
+        endCaptures:
+            '0':
+                name: punctuation.definition.string.end.wonkey
+            '1':
+                name: string.quoted.double.wonkey
+        name: import.file.wonkey
+        patterns:
+            -
+                include: '#wx_string_content'
+    -
+        begin: '(?i)\b(class)\s+([a-zA-Z_]\w*)(?:\s+(extends|implements)\s+([a-zA-Z_]\w*))*(?:\s+(final|abstract|extension))?'
+        beginCaptures:
+            '1':
+                name: storage.type.class.wonkey
+            '2':
+                name: entity.name.type.wonkey
+            '3':
+                name: storage.modifier.extends.wonkey
+            '4':
+                name: entity.other.inherited-class.wonkey
+            '5':
+                name: storage.modifier.class.wonkey
+        end: '(?i)\b(end(\s?class)?)\b'
+        endCaptures:
+            '1':
+                name: storage.type.class.wonkey
+        name: type.wonkey
+        patterns:
+            -
+                include: '#wx_comment_quote'
+            -
+                include: '#wx_comment_block'
+            -
+                include: '#wx_constants'
+            -
+                include: '#wx_string_quoted'
+            -
+                include: '#wx_attributes'
+            -
+                include: '#wx_null'
+            -
+                include: '#wx_types'
+            -
+                include: '#wx_typename'
+            -
+                include: '#wx_global_variable'
+            -
+                include: '#wx_local_variable'
+            -
+                include: '#wx_constant'
+            -
+                include: '#wx_function'
+            -
+                include: '#wx_method'
+            -
+                include: '#wx_field'
+            -
+                include: '#wx_constructor'
+    -
+        begin: '(?i)\b(struct)\s+([a-zA-Z_]\w*)'
+        beginCaptures:
+            '1':
+                name: storage.type.class.wonkey
+            '2':
+                name: entity.name.type.wonkey
+        end: '(?i)\b(end(\s?struct)?)\b'
+        endCaptures:
+            '1':
+                name: storage.type.class.wonkey
+        name: type.wonkey
+        patterns:
+            -
+                include: '#wx_comment_quote'
+            -
+                include: '#wx_comment_block'
+            -
+                include: '#wx_constants'
+            -
+                include: '#wx_string_quoted'
+            -
+                include: '#wx_attributes'
+            -
+                include: '#wx_null'
+            -
+                include: '#wx_types'
+            -
+                include: '#wx_typename'
+            -
+                include: '#wx_global_variable'
+            -
+                include: '#wx_local_variable'
+            -
+                include: '#wx_constant'
+            -
+                include: '#wx_function'
+            -
+                include: '#wx_method'
+            -
+                include: '#wx_field'
+            -
+                include: '#wx_constructor'
+    -
+        match: '\s*\b(c(ase|ontinue)|do|e(lse(\s?if)?|nd(class|for(each)?|function|if|method|select|while)|xit)|for(\s?each)?|if|return|select|then|wend|while)\b'
+        name: control.keywords.wonkey
+    -
+        include: '#wx_control_keywords'
+    -
+        begin: '(?i)\b(while)\b'
+        beginCaptures:
+            '1':
+                name: keyword.control.while.wonkey
+        end: '(?i)\b(end(\s?while)?|wend)\b'
+        endCaptures:
+            '1':
+                name: keyword.control.while.end.wonkey
+        name: control.while.wonkey
+        patterns:
+            -
+                include: $self
+    -
+        begin: '(?i)\b(if|then|else|else(\s?if)?)\b'
+        beginCaptures:
+            '1':
+                name: keyword.control.if.wonkey
+        end: '(?i)\b(end(\s?if)?)\b'
+        endCaptures:
+            '1':
+                name: keyword.control.if.end.wonkey
+        name: control.if.wonkey
+        patterns:
+            -
+                match: '(?i)\b(then)\b'
+                name: keyword.control.then.wonkey
+            -
+                match: '(?i)\b(else(\s?if)?)\b'
+                name: keyword.control.else-if.wonkey
+            -
+                match: '(?i)\b(else)\b'
+                name: keyword.control.else.wonkey
+            -
+                include: $self
+    -
+        begin: '(?i)\b(if)\b'
+        beginCaptures:
+            '1':
+                name: keyword.control.if.wonkey
+        end: $
+        endCaptures:
+            '1':
+                name: keyword.control.if.end.wonkey
+        name: control.if-then.wonkey
+        patterns:
+            -
+                match: '(?i)\b(then)?\b'
+                name: keyword.control.then.wonkey
+            -
+                include: $self
+    -
+        begin: '(?i)\b(for)\b'
+        beginCaptures:
+            '1':
+                name: keyword.control.for.wonkey
+        end: '(?i)\b(next)\b'
+        endCaptures:
+            '1':
+                name: keyword.control.for.end.wonkey
+        name: control.for.wonkey
+        patterns:
+            -
+                match: '(?i)\beachin\b'
+                name: keyword.control.for.eachin.wonkey
+            -
+                match: '(?i)\bto\b'
+                name: keyword.control.for.to.wonkey
+            -
+                match: '(?i)\buntil\b'
+                name: keyword.control.for.until.wonkey
+            -
+                match: '(?i)\bstep\b'
+                name: keyword.control.for.step.wonkey
+            -
+                include: $self
+    -
+        begin: '(?i)\b(repeat)\b'
+        beginCaptures:
+            '1':
+                name: keyword.control.repeat.wonkey
+        end: '(?i)\b(until|forever)\b'
+        endCaptures:
+            '1':
+                name: keyword.control.repeat.end.wonkey
+        name: control.repeat.wonkey
+        patterns:
+            -
+                include: $self
+    -
+        begin: '(?i)\b(select)\b'
+        beginCaptures:
+            '1':
+                name: keyword.control.select.wonkey
+        end: '(?i)\b(end(\s?select)?)\b'
+        endCaptures:
+            '1':
+                name: keyword.control.select.end.wonkey
+        name: control.select.wonkey
+        patterns:
+            -
+                captures:
+                    '1': {name: keyword.control.select.case.wonkey}
+                match: '(?i)\b(case)\b'
+                name: control.select.case.wonkey
+            -
+                captures:
+                    '1': {name: keyword.control.select.default.wonkey}
+                match: '(?i)\b(default)\b'
+                name: control.select.default.wonkey
+            -
+                include: $self
+    -
+        begin: '(?i)\b(try)\b'
+        beginCaptures:
+            '1':
+                name: keyword.control.try.wonkey
+        end: '(?i)\b(end(\s?try)?)\b'
+        endCaptures:
+            '1':
+                name: keyword.control.try.end.wonkey
+        name: control.try.wonkey
+        patterns:
+            -
+                captures:
+                    '1': {name: keyword.control.try.catch.wonkey}
+                match: '(?i)\b(catch)\b'
+                name: control.select.case.wonkey
+            -
+                include: $self
+    -
+        match: '(?i)\b(mod|shl|shr|and|or|not)\b'
+        name: keyword.operator.wonkey
+    -
+        match: ':?[\^+\-&~|=><\*\/]|(\?\.)'
+        name: keyword.operator.wonkey
+    -
+        match: '(?i)\b(private|public|protected)\b'
+        name: keyword.other.scope.wonkey
+    -
+        match: '(?i)\b(strict)\b'
+        name: keyword.other.strictness.wonkey
+    -
+        include: '#wx_null'
+    -
+        include: '#wx_types'
+    -
+        include: '#wx_constants'
+    -
+        include: '#wx_string_quoted'
+    -
+        match: '(?i)\b(self)\b'
+        name: variable.language.self.wonkey
+    -
+        match: '(?i)\b(super)\b'
+        name: variable.language.super.wonkey
+    -
+        include: '#wx_constructor'
+    -
+        include: '#wx_array'
+    -
+        include: '#wx_typename'
+repository:
+    wx_array:
+        begin: '(\[)'
+        beginCaptures:
+            '1':
+                name: keyword.operator.array.wonkey
+        end: '(\])'
+        endCaptures:
+            '1':
+                name: keyword.operator.array.wonkey
+        name: array.wonkey
+        patterns:
+            -
+                include: $self
+    wx_attributes:
+        begin: '(\{)'
+        beginCaptures:
+            '1':
+                name: storage.modifier.attributes.braces.wonkey
+        end: '(\})'
+        endCaptures:
+            '1':
+                name: storage.modifier.attributes.braces.wonkey
+        name: attributes.wonkey
+        patterns:
+            -
+                begin: '\b([a-zA-Z_]\w*)\s*(=)\s*'
+                beginCaptures:
+                    '1': {name: entity.other.attribute-name.wonkey}
+                end: '(?=\s|\}|[a-zA-Z_])'
+                name: attribute.wonkey
+                patterns:
+                    - {include: '#wx_string_quoted'}
+                    - {include: '#wx_numbers'}
+            -
+                captures:
+                    '1': {name: entity.other.attribute-name.wonkey}
+                match: '\b([a-zA-Z_]\w*)(?:\s*((?!=)|(?=\})))'
+                name: attribute.wonkey
+    wx_boolean:
+        match: '(?i)\b(true|false)\b'
+        name: constant.language.boolean.wonkey
+    wx_char:
+        match: \b(CHAR_(TAB|BACKSPACE|ENTER|ESCAPE|PAGE(UP|DOWN)|END|HOME|LEFT|UP|RIGHT|DOWN|INSERT|DELETE))\b
+        name: constant.language.char.wonkey
+    wx_commands:
+        #match: '(?i)\b(A(bstract|Cos|Sin|Tan|Tan2|bs|ccel(X|Y|Z)|dd(First|Last)|pp|rray)|B(ackwards|ool)|C(ase|eil|hannelState|l(amp|s)|o(mpare|nst|nt(ains|inue)|py|s|unt)|lear)|D(e(faultFlags|vice(Height|Width))|iscard|raw(Circle|Ellipse|Image|ImageRect|Line|Oval|Point|Poly|Rect|Text))|E(achin|xt(ends|ern)|nd|ndsWith|rror|xit)|F(alse|i(eld|nd|ndLast|rst)|loat(Map|Set)|loor|or(ever)|rames|romChar)|G(et|et(Alpha|Blend|Char|Color|Font|Matrix|Scissor)|lobal|rabImage)|H(andle(X|Y)|eight)|I(m(age|p(lements|ort))|n(clude|line|t(erface|Map|Set))|sEmpty)|Jo(in|y(Down|Hit|X|Y|Z))|Key|Key(Down|Hit|s)|L(ast|ength|ist|o(g|ad(Image|Sound|State|String)|cal))|M(ap|ax|ethod|i(llisecs|n)|o(d(ule)|use(Down|Hit|X|Y))|in)|N(amespace|ative|e(w|xt)|o(de)|ull)|O(bject(Enumerator)|n(Create|Loading|Render|Resume|Suspend|Update))|P(laySound|o(pMatrix|w)|r(i(nt|vate)|operty)|u(blic|shMatrix))|R(e(move|move(Each|First|Last)|p(eat|lace)|turn)|nd|otate)|S(aveState|cale|e(ed|lect|lf|t(Alpha|Blend|Channel(Pan|Rate|Volume)|Color|Font|Handle|Image|List|Matrix|Scissor|UpdateRate))|gn|h(l|r)|in|ound|plit|qrt|t(artsWith|ep|opChannel|ri(ct|ng(Map|Set)))|uper)|T(an|hen|o(Lower|Upper|uch(Down|Hit|X|Y))|r(ans(form|late)|im|ue))|Until|V(alue|alue(ForKey|s)|oid)|Width|Wend|Try|Catch|Default|Using|Internal|Friend|Object|)\b'
+        match: '(?i)\b(Namespace|Using|Import|Extern|Public|Private|Protected|Internal|Friend|Continue|Exit|New|Self|Super|Eachin|True|False|Null|Where|Alias|Const|Local|Global|Field|Method|Function|Property|Getter|Setter|Operator|Lambda|Enum|Class|Interface|Struct|Extends|Implements|Virtual|Override|Abstract|Final|Inline|Var|Varptr|Ptr|Not|Mod|And|Or|Shl|Shr|End|If|Then|Else|Elseif|Endif|While|Wend|Repeat|Until|Forever|For|To|Step|Next|Select|Case|Default|Try|Catch|Throw|Throwable|Variant|CString|WString|TypeInfo|Typeof|Return|Print|Static|Cast|Extension|Protocol|Finalize|Delete)\b'
+        name: keyword.other.commands.wonkey
+    wx_comment_block:
+        begin: '(?i)(?<=\s|^|;)\#rem\b'
+        end: '(?i)(?<=\s|^|;)\#end\b'
+        name: comment.block.rem.wonkey
+        patterns:
+            -
+                include: '#wx_url_content'
+    wx_comment_quote:
+        begin: ''''
+        end: $
+        name: comment.line.apostrophe.wonkey
+        patterns:
+            -
+                include: '#wx_url_content'
+    wx_constant:
+        captures:
+            '1':
+                name: keyword.other.new.wonkey
+            '2':
+                name: constant.wonkey
+        match: '(?i)\b(const)\s+([a-zA-Z_]\w*)\b'
+        name: constant.wonkey
+    wx_constants:
+        name: constants.wonkey
+        patterns:
+            -
+                include: '#wx_pi'
+            -
+                include: '#wx_boolean'
+            -
+                include: '#wx_numbers'
+            -
+                include: '#wx_joy'
+            -
+                include: '#wx_key'
+            -
+                include: '#wx_mouse'
+            -
+                include: '#wx_char'
+            -
+                include: '#wx_env'
+    wx_constructor:
+        captures:
+            '1':
+                name: keyword.other.new.wonkey
+            '2':
+                name: storage.type.class.wonkey
+        match: '(?i)\b(new)\s+([a-zA-Z_]\w*)\b'
+        name: call.constructor.wonkey
+    wx_control_keywords:
+        match: '(?i)\b(throw|return|exit|continue)\b'
+        name: keyword.control.wonkey
+    wx_env:
+        match: \b(TARGET|LANG)\b
+        name: constant.language.env.wonkey
+    wx_field:
+        captures:
+            '1':
+                name: keyword.other.variable.field.wonkey
+        match: '(?i)\b(field)\s+([a-zA-Z_]\w*)+\b'
+        name: variable.field.wonkey
+    wx_function:
+        begin: '(?i)\b(function)\s+([a-zA-Z_]\w*)\b'
+        beginCaptures:
+            '1':
+                name: storage.type.function.wonkey
+            '2':
+                name: entity.name.function.wonkey
+        end: '(?i)\b(end(\s?function)?)\b'
+        endCaptures:
+            '1':
+                name: storage.type.function.wonkey
+        name: function.wonkey
+        patterns:
+            -
+                include: $self
+    wx_global_variable:
+        captures:
+            '1':
+                name: storage.modifier.global.wonkey
+        match: '(?i)\b(global)\s+([a-zA-Z_]\w*)\b'
+        name: variable.wonkey
+    wx_joy:
+        match: \bJOY_(A|B|X|Y|LB|RB|BACK|START|LEFT|UP|RIGHT|DOWN)\b
+        name: constant.language.joy.wonkey
+    wx_key:
+        match: '\bKEY_(BACKSPACE|TAB|ENTER|ESCAPE|SPACE|SHIFT|CONTROL|PAGEUP|PAGEDOWN|END|HOME|LEFT|UP|RIGHT|DOWN|INSERT|DELETE|F([0-9]|1[0-2])|[0-9]|[A-Z]|TILDE|MINUS|EQUALS|OPENBRACKET|CLOSEBRACKET|BACKSLASH|SEMICOLON|QUOTES|COMMA|PERIOD|SLASH|(L|R|M)MB)|TOUCH([0-9]|[1-2][0-9]|3[0-2])\b'
+        name: constant.language.key.wonkey
+    wx_local_variable:
+        captures:
+            '1':
+                name: keyword.other.variable.local.wonkey
+        match: '(?i)\b(local)\s+([a-zA-Z_]\w*)\b'
+        name: variable.wonkey
+    wx_method:
+        begin: '(?i)\b(method)\s+([a-zA-Z_]\w*)\b'
+        beginCaptures:
+            '1':
+                name: storage.type.method.wonkey
+            '2':
+                name: entity.name.method.wonkey
+        end: '(?i)\b(end(\s?method)?)\b'
+        endCaptures:
+            '1':
+                name: storage.type.method.wonkey
+        name: method.wonkey
+        patterns:
+            -
+                include: $self
+    wx_mouse:
+        match: \bMOUSE_(LEFT|RIGHT|MIDDLE)\b
+        name: constant.language.mouse.wonkey
+    wx_null:
+        match: '(?i)\bnull\b'
+        name: constant.language.null.wonkey
+    wx_numbers:
+        patterns:
+            -
+                match: '(\$[0-9a-fA-F]{1,16})'
+                name: constant.numeric.integer.hexadecimal.wonkey
+            -
+                match: "(?x) (?<! \\$ ) (\n\t\t\t\t\t\t\t\\b ([0-9]+ \\. [0-9]+) |\n\t\t\t\t\t\t\t(\\. [0-9]+)\n\t\t\t\t\t\t)"
+                name: constant.numeric.float.wonkey
+            -
+                match: '(?x)\b(([0-9]+))'
+                name: constant.numeric.integer.wonkey
+    wx_pi:
+        match: '\b(HALF|TWO)?PI\b'
+        name: constant.language.wonkey
+    wx_string_content:
+        patterns:
+            -
+                match: '\~[^"]'
+                name: constant.character.escape.wonkey
+            -
+                include: '#wx_url_content'
+    wx_string_quoted:
+        begin: '"'
+        beginCaptures:
+            '0':
+                name: punctuation.definition.string.begin.wonkey
+        end: '"'
+        endCaptures:
+            '0':
+                name: punctuation.definition.string.end.wonkey
+        name: string.quoted.double.wonkey
+        patterns:
+            -
+                include: '#wx_string_content'
+    wx_typename:
+        captures:
+            '1':
+                name: storage.type.wonkey
+            '2':
+                name: storage.type.wonkey
+        match: '(?xi)(?: \: \s* ([a-zA-Z_]\w*) | ([!#%]|@{1,2}|\$[zw]?) )'
+        name: typename.wonkey
+    wx_types:
+        match: '(?i)\b(array|bool|string|(u)?(byte|short|int|long)|float|double|void|object)\b'
+        name: storage.type.wonkey
+    wx_url_content:
+        match: '[a-zA-Z_]\w*://[^ "''()\[\]]*(?=$|\b)'
+        name: url.wonkey
+scopeName: source.wonkey
+uuid: adbf7dfa-90fb-4551-938b-c4867d7e9a03
